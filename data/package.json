@@ -9,6 +9,7 @@
   "author": "Zack Moore",
   "license": "ISC",
   "dependencies": {
-    "cfb-data": "^3.0.0"
+    "cfb-data": "^3.0.0",
+    "mongoose": "^5.2.14"
   }
 }
