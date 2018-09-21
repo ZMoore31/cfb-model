@@ -18,6 +18,7 @@ for year in range(2002, 2018):
                 team1 = {
                   'date' : event["date"],
                   'year' : event["season"]["year"],
+                  'seasonType' : 'regular',
                   'gameID' : event["id"],
                   'neutralSite' : event["competitions"][0]["neutralSite"],
                   'conferenceCompetition' : event["competitions"][0]["conferenceCompetition"],
@@ -33,6 +34,7 @@ for year in range(2002, 2018):
                 team2 = {
                   'date' : event["date"],
                   'year' : event["season"]["year"],
+                  'seasonType' : 'regular',
                   'gameID' : event["id"],
                   'neutralSite' : event["competitions"][0]["neutralSite"],
                   'conferenceCompetition' : event["competitions"][0]["conferenceCompetition"],
@@ -45,3 +47,41 @@ for year in range(2002, 2018):
                 }
                 games.insert_one(team2).inserted_id
         time.sleep(2)
+
+
+for year in range(2002, 2018):
+    output = getScoreboard(year, week=1, seasontype=3)
+    if(len(output['events']) > 0):
+        for event in output['events']:
+            team1 = {
+              'date' : event["date"],
+              'year' : event["season"]["year"],
+              'seasonType' : 'bowl',
+              'gameID' : event["id"],
+              'neutralSite' : event["competitions"][0]["neutralSite"],
+              'conferenceCompetition' : event["competitions"][0]["conferenceCompetition"],
+              'teamID' : event["competitions"][0]["competitors"][0]["id"],
+              'opposingTeamID' : event["competitions"][0]["competitors"][1]["id"],
+              'teamAbbr' : event["competitions"][0]["competitors"][0]["team"]["abbreviation"],
+              'homeAway' : event["competitions"][0]["competitors"][0]["homeAway"],
+              'pointsFor' : event["competitions"][0]["competitors"][0]["score"],
+              'pointsAgainst' : event["competitions"][0]["competitors"][1]["score"]
+            }
+            games.insert_one(team1).inserted_id
+
+            team2 = {
+              'date' : event["date"],
+              'year' : event["season"]["year"],
+              'seasonType' : 'bowl',
+              'gameID' : event["id"],
+              'neutralSite' : event["competitions"][0]["neutralSite"],
+              'conferenceCompetition' : event["competitions"][0]["conferenceCompetition"],
+              'teamID' : event["competitions"][0]["competitors"][1]["id"],
+              'opposingTeamID' : event["competitions"][0]["competitors"][0]["id"],
+              'teamAbbr' : event["competitions"][0]["competitors"][1]["team"]["abbreviation"],
+              'homeAway' : event["competitions"][0]["competitors"][1]["homeAway"],
+              'pointsFor' : event["competitions"][0]["competitors"][1]["score"],
+              'pointsAgainst' : event["competitions"][0]["competitors"][0]["score"]
+            }
+            games.insert_one(team2).inserted_id
+    time.sleep(2)
