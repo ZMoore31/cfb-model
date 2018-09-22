@@ -69,3 +69,8 @@ where school = 'Presbyterian';
 update recruiting_rankings
 set school = 'Texas A&M-Commerce'
 where school = 'Texas A&M Commerce';
+
+update recruiting_rankings b
+inner join team_info a
+	on a.`schoolName` = b.school
+set b.teamID = a.teamID
