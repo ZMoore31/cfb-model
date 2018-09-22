@@ -12,6 +12,9 @@ numpy = "*"
 mysql-connector-python = "*"
 python-dotenv = "*"
 sqlalchemy = "*"
+scikit-learn = "*"
+matplotlib = "*"
+scipy = "*"
 
 [dev-packages]
 
