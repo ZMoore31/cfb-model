@@ -9,6 +9,9 @@ pipfile = "*"
 pymongo = "*"
 pandas = "*"
 numpy = "*"
+mysql-connector-python = "*"
+python-dotenv = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 
