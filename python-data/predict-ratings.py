@@ -42,14 +42,44 @@ inner join recruiting_rankings e
 	on a.year - 4 = e.year and a.teamID = e.teamID
 inner join ratings f
 	on a.year - 1 = f.year and a.teamID = f.teamID
+where a.year < 2017
+order by a.year, b.points desc
+'''
+
+sql2 = '''
+select
+    a.teamID,
+	a.rating,
+    f.rating as prevRating,
+	b.points as recruiting1,
+	c.points as recruiting2,
+	d.points as recruiting3,
+	e.points as recruiting4
+from ratings a
+inner join recruiting_rankings b
+	on a.year - 1 = b.year and a.teamID = b.teamID
+inner join recruiting_rankings c
+	on a.year - 2 = c.year and a.teamID = c.teamID
+inner join recruiting_rankings d
+	on a.year - 3 = d.year and a.teamID = d.teamID
+inner join recruiting_rankings e
+	on a.year - 4 = e.year and a.teamID = e.teamID
+inner join ratings f
+	on a.year - 1 = f.year and a.teamID = f.teamID
+where a.year = 2017
 order by a.year, b.points desc
 '''
 
 data = pd.read_sql(sql, engine)
 data = data.fillna(0)
 
+data_2017 = pd.read_sql(sql2, engine)
+data_2017 = data_2017.fillna(0)
+
 X=data[['prevRating','recruiting1','recruiting2','recruiting3','recruiting4']].values
 y=data[['rating']].values
+
+X_2017=data_2017[['prevRating','recruiting1','recruiting2','recruiting3','recruiting4']].values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
@@ -76,6 +106,10 @@ print("Mean squared error: %.2f"
 # Explained variance score: 1 is perfect prediction
 print('Variance score: %.2f' % r2_score(y_test, y_pred))
 
+pred_2017 = regr.predict(sc.transform(X_2017))
+
+data_2017['predRating'] = pred_2017
+data_2017.to_sql('2017_predictions', con=engine)
 # Plot outputs
 # plt.scatter(X_test, y_test,  color='black')
 # plt.plot(X_test, y_pred, color='blue', linewidth=3)
